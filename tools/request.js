@@ -5,6 +5,8 @@ var analysis = require("./analysis.js");
 
 var fs = require("fs");
 function requestClass(){
+	this.http = http;
+	this.fs =fs;
 	this.options =  {
 		hostname : "a.qidian.com",
 		prot : 80,
@@ -100,13 +102,14 @@ requestClass.prototype.getDetailData = function(urlList){
  */
 requestClass.prototype.getDetailRequest = function(option){
 	var htmlData = "";
+	var that = this;
 	var req = http.request(option,function(res){
 		res.setEncoding("utf8");//设置编码
 		res.on('data', function(data) {
 			htmlData += data;
 			/* Act on the event */
 		}).on('end', function(event) {
-			analysis.Analysis.anaDetail(htmlData,option.path);
+			analysis.Analysis.anaDetail(htmlData,option.path,that.getReadRequest,that);
 		 	// that.getNextRequest();
 			/* Act on the event */
 		});;
@@ -116,6 +119,15 @@ requestClass.prototype.getDetailRequest = function(option){
 	}); 
 	//结束请求
 	req.end();
+}
+/**
+ * 获取文章阅读列表
+ * @param  {[type]} url [description]
+ * @return {[type]}     [description]
+ */
+requestClass.prototype.getReadRequest = function(url){
+	console.log(url);
+	console.log(this.http);
 }
 subRequest.prototype = Object.create(requestClass.prototype);
 

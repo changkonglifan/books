@@ -87,7 +87,7 @@ Analysis.prototype.anaTxt = function(){
  * 两件事：1，获取 书 图片
  * 2，获取书阅读地址
  */
-Analysis.prototype.anaDetail = function (data,path){
+Analysis.prototype.anaDetail = function (data,path,fn,obj){
 	var that = this;
 	var bookId = path.split("/")[2].split(".")[0];//书ID
 	var imgUrl = "";//图片路径
@@ -98,7 +98,7 @@ Analysis.prototype.anaDetail = function (data,path){
 	var bookTxtNum = data.match(tools.Regular.bookTxtNum)[0].match(tools.Regular.txt)[0].trim();//书类型
 	var bookStatus = data.match(tools.Regular.bookStauts)[0].indexOf("连载中") >= 0 ? 0 : 1;
 	console.log(bookTxtNum + ""+bookName + "" + bookStatus);
-	return;
+	// return;
 	anaReadUrl(data);
 	function anaReadUrl(data){
 		var urls = that.getUrls(data);
@@ -113,7 +113,8 @@ Analysis.prototype.anaDetail = function (data,path){
 			}
 		}
 		saveUrl = "/public/bookImages/"+bookId;
-		tools.saveImage(imgUrl,saveUrl,bookId);//保存图片
+		// tools.saveImage(imgUrl,saveUrl,bookId);//保存图片
+		fn.call(obj,readUrl);
 		//写入数据库
 		// that.insertBook(bookId,saveUrl);
 	}

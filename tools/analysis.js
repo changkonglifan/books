@@ -66,6 +66,22 @@ Analysis.prototype.getEffectiveUrls = function(urls){
 	return rUrls;
 }
 /**
+ * 解析章节
+ * 
+ * @return {[type]} [description]
+ */
+Analysis.prototype.anaChapter = function(data){
+
+}
+/**
+ * 解析章节文本
+ * @return {[type]} [description]
+ */
+Analysis.prototype.anaTxt = function(){
+
+}
+
+/**
  * 解析详细数据 
  * 阅读页
  * 两件事：1，获取 书 图片
@@ -78,8 +94,10 @@ Analysis.prototype.anaDetail = function (data,path){
 	var author = data.match(tools.Regular.authorName)[0].match(tools.Regular.words)[0].trim();//作者
 	var time = data.match(tools.Regular.time)[0].match(tools.Regular.time1)[0];
 	var bookName = data.match(tools.Regular.bookName)[0].match(tools.Regular.words)[0].trim();//书名
-	var bookType = data.match(tools.Regular.bookName)[0].match(tools.Regular.bookName1)[0].trim();//书名
-	console.log(author);
+	var bookType = data.match(tools.Regular.bookType)[0].match(tools.Regular.words)[0].trim();//书类型
+	var bookTxtNum = data.match(tools.Regular.bookTxtNum)[0].match(tools.Regular.txt)[0].trim();//书类型
+	var bookStatus = data.match(tools.Regular.bookStauts)[0].indexOf("连载中") >= 0 ? 0 : 1;
+	console.log(bookTxtNum + ""+bookName + "" + bookStatus);
 	return;
 	anaReadUrl(data);
 	function anaReadUrl(data){
@@ -104,15 +122,8 @@ Analysis.prototype.anaDetail = function (data,path){
  * 插入数据库
  * @return {[type]} [description]
  */
-Analysis.prototype.insertBook = function(bookId,saveUrl){
-	var sql = "insert into b_list set bookId = " + bookId +",imgSrc = '" + saveUrl+"'";
-	sqlHelper.query(sql,callBack);
-	function callBack(result){
-		if(result.affectedRows == 1){
-			console.log('插入成功！')
-		}
-	}
-
+Analysis.prototype.insertBookDetail = function(bookId,saveUrl){
+	
 }
 
 /**

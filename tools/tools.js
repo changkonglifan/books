@@ -5,10 +5,13 @@ var Regular = {
 	urls:/(https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]/g,
 	authorName :/<span\sitemprop=\"name\">\s{1,}[\u4e00-\u9fa5]{1,}<\/span>/,
 	words:/[\u4e00-\u9fa5]{1,}/,
+	txt : /\d{1,}/,
 	time:/<span\sitemprop=\"dateModified\">[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}[\s][0-9]{2}[\:][0-9]{2}<\/span>/,
 	time1:/[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}[\s][0-9]{2}[\:][0-9]{2}/,
 	bookName:/<h1\sitemprop=\"name\">\s{1,}[\u4e00-\u9fa5]{1,}<\/h1>/,
-	bookType:
+	bookType: /<span\sitemprop=\"genre\">{1,}[\u4e00-\u9fa5]{1,}<\/span>/,
+	bookTxtNum : /<span\sitemprop=\"wordCount\">\d{1,}<\/span>/,
+	bookStauts : /<span\sitemprop=\"updataStatus\">[\u4e00-\u9fa5]{1,}<\/span>/
 }
 exports.Regular = Regular;
 
@@ -30,6 +33,7 @@ var mkdirs = function(saveUrl){
 	}
 }
 exports.mkdirs = mkdirs;
+
 exports.saveImage = function(imgUrl,saveUrl,name){
 
 	http.get(imgUrl, function(res){

@@ -3,6 +3,8 @@ var fs = require("fs");
 
 var sqlHelper = require("./mysqlHelper.js");
 
+var jq = require("jquery");
+
 var Analysis = function(){
 
 	this.urlOld = [];//已经遍历的元素
@@ -97,27 +99,20 @@ Analysis.prototype.anaDetail = function (data,path,fn,obj){
 	var bookType = data.match(tools.Regular.bookType)[0].match(tools.Regular.words)[0].trim();//书类型
 	var bookTxtNum = data.match(tools.Regular.bookTxtNum)[0].match(tools.Regular.txt)[0].trim();//书类型
 	var bookStatus = data.match(tools.Regular.bookStauts)[0].indexOf("连载中") >= 0 ? 0 : 1;
-	console.log(bookTxtNum + ""+bookName + "" + bookStatus);
-	// return;
-	anaReadUrl(data);
-	function anaReadUrl(data){
-		var urls = that.getUrls(data);
-		var readUrl = "";
-		var imgUrl = "";
-		for(var i = 0 ; i  < urls.length ; i++){
-			if(urls[i].indexOf("read.qidian.com")>=0){
-				readUrl = urls[i];
-			}
-			if(urls[i].indexOf("qpic")>=0){
-				imgUrl = urls[i];
-			}
-		}
-		saveUrl = "/public/bookImages/"+bookId;
-		// tools.saveImage(imgUrl,saveUrl,bookId);//保存图片
-		fn.call(obj,readUrl);
-		//写入数据库
-		// that.insertBook(bookId,saveUrl);
-	}
+	var readUrl = data.match(tools.Regular.readUrl)[0].match(tools.Regular.urls)[0].trim();
+	var imgUrl = data.match(tools.Regular.readUrl)[0].match(tools.Regular.urls)[0].trim();
+	fn.call(obj,readUrl);//解析详细
+	//保存图片
+	// tools.saveImage(imgUrl,"/public/bookImages/"+bookId,bookId);
+	
+}
+
+Analysis.prototype.anaReadData = function(data,path,fn,obj){
+	var that = this;
+	var chapters = [];
+	var chapterMatch = data.match(tools.Regular.chapter);
+	debugger;
+	console.log(chapterMatch.length);
 }
 /**
  * 插入数据库

@@ -124,10 +124,46 @@ requestClass.prototype.getDetailRequest = function(option){
  * 获取文章阅读列表
  * @param  {[type]} url [description]
  * @return {[type]}     [description]
+
  */
 requestClass.prototype.getReadRequest = function(url){
-	console.log(url);
-	console.log(this.http);
+	// console.log(url);
+	// console.log(this.http);
+	var that = this;
+	var obj = anaUrl(url);
+	var option = {
+		hostname : obj.hostname,
+		prot : 80,
+		path : obj.path,
+		method: "GET"
+	}
+	var htmlData = "";
+	var req = this.http.request(option,function(res){
+		res.setEncoding("utf8");//设置编码
+		res.on('data', function(data) {
+			htmlData += data;
+			/* Act on the event */
+		}).on('end', function(event) {
+			analysis.Analysis.anaReadData(htmlData);
+		 	// that.getNextRequest();
+			/* Act on the event */
+		});;
+	})
+	req.on('error', function(e) { 
+		console.log('problem with request: ' + e.message); 
+	}); 
+	//结束请求
+	req.end();
+}
+
+function anaUrl ( url){
+	var arr = url.split(".com");
+	var hostname = arr[0].split("://")[1]+".com";
+	var path = arr[1];
+	return {
+		hostname:hostname,
+		path:path
+	}
 }
 subRequest.prototype = Object.create(requestClass.prototype);
 

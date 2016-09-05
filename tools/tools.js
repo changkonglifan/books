@@ -11,10 +11,17 @@ var Regular = {
 	bookName:/<h1\sitemprop=\"name\">\s{1,}[\u4e00-\u9fa5]{1,}<\/h1>/,
 	bookType: /<span\sitemprop=\"genre\">{1,}[\u4e00-\u9fa5]{1,}<\/span>/,
 	bookTxtNum : /<span\sitemprop=\"wordCount\">\d{1,}<\/span>/,
-	bookStauts : /<span\sitemprop=\"updataStatus\">[\u4e00-\u9fa5]{1,}<\/span>/
+	bookStauts : /<span\sitemprop=\"updataStatus\">[\u4e00-\u9fa5]{1,}<\/span>/,
+	chapter : /<span\sitemprop=(\'|\")headline(\'|\")>[\u4e00-\u9fa5?,0-9]{1,}\s[u4e00-\u9fa5?!！？……，,0-9]{1,}<\/span>/g,
+	readUrl :/<a\sitemprop=\"url\"\sstat-type=\"read\"\shref=\"(https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]/,
+	imgUrl : /itemprop="image"\ssrc=\"(https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]/
 }
 exports.Regular = Regular;
-
+/**
+ * 创建文件夹
+ * @param  {[type]} saveUrl [description]
+ * @return {[type]}         [description]
+ */
 var mkdirs = function(saveUrl){
 	var dirs = saveUrl.split("/");
 	var dirPath = ".";
@@ -34,6 +41,13 @@ var mkdirs = function(saveUrl){
 }
 exports.mkdirs = mkdirs;
 
+/**
+ * 保存图片
+ * @param  {[type]} imgUrl  [description]
+ * @param  {[type]} saveUrl [description]
+ * @param  {[type]} name    [description]
+ * @return {[type]}         [description]
+ */
 exports.saveImage = function(imgUrl,saveUrl,name){
 
 	http.get(imgUrl, function(res){

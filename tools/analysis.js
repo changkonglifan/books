@@ -3,8 +3,6 @@ var fs = require("fs");
 
 var sqlHelper = require("./mysqlHelper.js");
 
-var jq = require("jquery");
-
 var Analysis = function(){
 
 	this.urlOld = [];//已经遍历的元素
@@ -106,14 +104,26 @@ Analysis.prototype.anaDetail = function (data,path,fn,obj){
 	// tools.saveImage(imgUrl,"/public/bookImages/"+bookId,bookId);
 	
 }
-
-Analysis.prototype.anaReadData = function(data,path,fn,obj){
+/**
+ * 解析阅读数据
+ * 
+ * @param  {[type]}   data [description]
+ * @param  {[type]}   path [description]
+ * @param  {Function} fn   [description]
+ * @param  {[type]}   obj  [description]
+ * @return {[type]}        [description]
+ */
+Analysis.prototype.anaChapterUrl = function(data,path,fn,obj){
 	var that = this;
 	var chapters = [];
-	var chapterMatch = data.match(tools.Regular.chapter);
-	debugger;
-	console.log(chapterMatch.length);
+	// 所有章节地址
+	var chapterUrl = data.match(tools.Regular.chapterUrl).map(function(item,index,resouce){
+		return item.match(tools.Regular.urls)[0];
+	})
+	
 }
+
+
 /**
  * 插入数据库
  * @return {[type]} [description]

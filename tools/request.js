@@ -144,7 +144,7 @@ requestClass.prototype.getReadRequest = function(url){
 			htmlData += data;
 			/* Act on the event */
 		}).on('end', function(event) {
-			analysis.Analysis.anaReadData(htmlData);
+			analysis.Analysis.anaChapterUrl(htmlData);
 		 	// that.getNextRequest();
 			/* Act on the event */
 		});;
@@ -154,6 +154,16 @@ requestClass.prototype.getReadRequest = function(url){
 	}); 
 	//结束请求
 	req.end();
+}
+/**
+ * 获取请求
+ * @param  {[type]}   url 请求地址[description]
+ * @param  {Function} fn 回调函数  [description]
+ * @param  {[type]}   obj 回调对象[description]
+ * @return {[type]}       [description]
+ */
+requestClass.prototype.getRequest =function(url,fn,obj){
+
 }
 
 function anaUrl ( url){

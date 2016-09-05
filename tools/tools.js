@@ -12,7 +12,7 @@ var Regular = {
 	bookType: /<span\sitemprop=\"genre\">{1,}[\u4e00-\u9fa5]{1,}<\/span>/,
 	bookTxtNum : /<span\sitemprop=\"wordCount\">\d{1,}<\/span>/,
 	bookStauts : /<span\sitemprop=\"updataStatus\">[\u4e00-\u9fa5]{1,}<\/span>/,
-	chapter : /<span\sitemprop=(\'|\")headline(\'|\")>[\u4e00-\u9fa5?,0-9]{1,}\s[u4e00-\u9fa5?!！？……，,0-9]{1,}<\/span>/g,
+	chapterUrl : /itemprop=\'url\'\shref=\"http:\/\/read.qidian.com\/BookReader\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]/g,
 	readUrl :/<a\sitemprop=\"url\"\sstat-type=\"read\"\shref=\"(https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]/,
 	imgUrl : /itemprop="image"\ssrc=\"(https?|ftp|file):\/\/[-A-Za-z0-9+&@#\/%?=~_|!:,.;]+[-A-Za-z0-9+&@#\/%=~_|]/
 }

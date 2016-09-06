@@ -97,27 +97,57 @@ Analysis.prototype.anaDetail = function (data,path,fn,obj){
 	var bookType = data.match(tools.Regular.bookType)[0].match(tools.Regular.words)[0].trim();//书类型
 	var bookTxtNum = data.match(tools.Regular.bookTxtNum)[0].match(tools.Regular.txt)[0].trim();//书类型
 	var bookStatus = data.match(tools.Regular.bookStauts)[0].indexOf("连载中") >= 0 ? 0 : 1;
-	console.log(bookTxtNum + ""+bookName + "" + bookStatus);
-	// return;
-	anaReadUrl(data);
-	function anaReadUrl(data){
-		var urls = that.getUrls(data);
-		var readUrl = "";
-		var imgUrl = "";
-		for(var i = 0 ; i  < urls.length ; i++){
-			if(urls[i].indexOf("read.qidian.com")>=0){
-				readUrl = urls[i];
-			}
-			if(urls[i].indexOf("qpic")>=0){
-				imgUrl = urls[i];
-			}
-		}
-		saveUrl = "/public/bookImages/"+bookId;
-		// tools.saveImage(imgUrl,saveUrl,bookId);//保存图片
-		fn.call(obj,readUrl);
-		//写入数据库
-		// that.insertBook(bookId,saveUrl);
+	var readUrl = data.match(tools.Regular.readUrl)[0].match(tools.Regular.urls)[0].trim();
+	var imgUrl = data.match(tools.Regular.readUrl)[0].match(tools.Regular.urls)[0].trim();
+	fn.call(obj,readUrl,bookId);//解析详细
+	//保存图片
+	// tools.saveImage(imgUrl,"/public/bookImages/"+bookId,bookId);
+	
+}
+/**
+ * 解析阅读数据
+ * 
+ * @param  {[type]}   data [description]
+ * @param  {[type]}   path [description]
+ * @param  {Function} fn   [description]
+ * @param  {[type]}   obj  [description]
+ * @return {[type]}        [description]
+ */
+Analysis.prototype.anaChapterUrl = function(data,bookId,fn,obj){
+	var chapters = [];
+	// 所有章节地址
+	var chapterUrl = data.match(tools.Regular.chapterUrl).map(function(item,index,resouce){
+		return item.match(tools.Regular.urls)[0];
+	})
+	this.anaChapterUrlList(chapterUrl,bookId,fn,obj);
+}
+
+Analysis.prototype.anaChapterUrlList = function(chapterUrl,bookId,fn,obj){
+	var len = chapterUrl.length;
+	for(var i = 0; i < len; i ++){
+		fn.call(obj,chapterUrl[i],bookId);
 	}
+	// chapterUrl.each(function(index, el) {
+	// 	fn.call(obj,el,bookId);
+	// });
+}
+
+/**
+ * 章节数据
+ * @param  {[type]} data   [description]
+ * @param  {[type]} bookId [description]
+ * @return {[type]}        [description]
+ */
+Analysis.prototype.anaChapterData = function(data,bookId,fn,obj){
+	var chapterName = data.match(tools.Regular.chapterName);
+	var chapterDataUrl = data.match(tools.Regular.chapterDataUrl)[0].match(tools.Regular.urls)[0];
+	var chapterNums = parseInt(data.match(tools.Regular.chapterNums)[0].split("：")[1]);
+	var updateTime = data.match(tools.Regular.chapterUpTime)[0].split("更新时间 : ")[1];
+	fn.call(obj,chapterDataUrl,this.anaDataTxt,this);
+}
+Analysis.prototype.anaDataTxt = function(htmlData){
+	var data = htmlData;
+	console.log(data);
 }
 /**
  * 插入数据库

@@ -2,21 +2,21 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost_3306
-Source Server Version : 50520
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : books
 
 Target Server Type    : MYSQL
-Target Server Version : 50520
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-09-04 22:09:21
+Date: 2016-09-06 19:39:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `author`
+-- Table structure for author
 -- ----------------------------
 DROP TABLE IF EXISTS `author`;
 CREATE TABLE `author` (
@@ -31,7 +31,7 @@ CREATE TABLE `author` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `book`
+-- Table structure for book
 -- ----------------------------
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book` (
@@ -52,7 +52,7 @@ CREATE TABLE `book` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `booktype`
+-- Table structure for booktype
 -- ----------------------------
 DROP TABLE IF EXISTS `booktype`;
 CREATE TABLE `booktype` (
@@ -68,7 +68,7 @@ CREATE TABLE `booktype` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `chapter`
+-- Table structure for chapter
 -- ----------------------------
 DROP TABLE IF EXISTS `chapter`;
 CREATE TABLE `chapter` (
@@ -78,6 +78,7 @@ CREATE TABLE `chapter` (
   `ChapterName` varchar(50) DEFAULT NULL,
   `TxtNum` int(12) DEFAULT NULL,
   `ChapterTxt` text,
+  `UpdateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

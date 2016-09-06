@@ -126,7 +126,7 @@ requestClass.prototype.getDetailRequest = function(option){
  * @return {[type]}     [description]
 
  */
-requestClass.prototype.getReadRequest = function(url){
+requestClass.prototype.getReadRequest = function(url,bookId){
 	// console.log(url);
 	// console.log(this.http);
 	var that = this;
@@ -144,7 +144,39 @@ requestClass.prototype.getReadRequest = function(url){
 			htmlData += data;
 			/* Act on the event */
 		}).on('end', function(event) {
-			analysis.Analysis.anaChapterUrl(htmlData);
+			analysis.Analysis.anaChapterUrl(htmlData,bookId,that.requestChapter,that);
+		 	// that.getNextRequest();
+			/* Act on the event */
+		});;
+	})
+	req.on('error', function(e) { 
+		console.log('problem with request: ' + e.message); 
+	}); 
+	//结束请求
+	req.end();
+}
+/**
+ * 请求 详细地址
+ * @param  {[type]} url [description]
+ * @return {[type]}     [description]
+ */
+requestClass.prototype.requestChapter = function(url,bookId){
+	var that = this;
+	var obj = anaUrl(url);
+	var option = {
+		hostname : obj.hostname,
+		prot : 80,
+		path : obj.path,
+		method: "GET"
+	}
+	var htmlData = "";
+	var req = this.http.request(option,function(res){
+		res.setEncoding("utf8");//设置编码
+		res.on('data', function(data) {
+			htmlData += data;
+			/* Act on the event */
+		}).on('end', function(event) {
+			analysis.Analysis.anaChapterData(htmlData,bookId);
 		 	// that.getNextRequest();
 			/* Act on the event */
 		});;

@@ -138,12 +138,16 @@ Analysis.prototype.anaChapterUrlList = function(chapterUrl,bookId,fn,obj){
  * @param  {[type]} bookId [description]
  * @return {[type]}        [description]
  */
-Analysis.prototype.anaChapterData = function(data,bookId){
+Analysis.prototype.anaChapterData = function(data,bookId,fn,obj){
 	var chapterName = data.match(tools.Regular.chapterName);
 	var chapterDataUrl = data.match(tools.Regular.chapterDataUrl)[0].match(tools.Regular.urls)[0];
 	var chapterNums = parseInt(data.match(tools.Regular.chapterNums)[0].split("：")[1]);
 	var updateTime = data.match(tools.Regular.chapterUpTime)[0].split("更新时间 : ")[1];
-	
+	fn.call(obj,chapterDataUrl,this.anaDataTxt,this);
+}
+Analysis.prototype.anaDataTxt = function(htmlData){
+	var data = htmlData;
+	console.log(data);
 }
 /**
  * 插入数据库

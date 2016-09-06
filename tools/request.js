@@ -3,6 +3,8 @@ var http = require("http");
 
 var analysis = require("./analysis.js");
 
+var Iconv = require('iconv-lite');
+
 var fs = require("fs");
 function requestClass(){
 	this.http = http;
@@ -176,7 +178,7 @@ requestClass.prototype.requestChapter = function(url,bookId){
 			htmlData += data;
 			/* Act on the event */
 		}).on('end', function(event) {
-			analysis.Analysis.anaChapterData(htmlData,bookId);
+			analysis.Analysis.anaChapterData(htmlData,bookId,that.getRequestData,that);
 		 	// that.getNextRequest();
 			/* Act on the event */
 		});;
@@ -194,8 +196,32 @@ requestClass.prototype.requestChapter = function(url,bookId){
  * @param  {[type]}   obj 回调对象[description]
  * @return {[type]}       [description]
  */
-requestClass.prototype.getRequest =function(url,fn,obj){
-
+requestClass.prototype.getRequestData =function(url,fn,obj,fn1,obj1){
+	var that = this;
+	var obj = anaUrl(url);
+	var option = {
+		hostname : obj.hostname,
+		prot : 80,
+		path : obj.path,
+		method: "GET"
+	}
+	var htmlData = "";
+	var req = this.http.request(option,function(res){
+		
+		res.on('data', function(data) {
+			htmlData += data;
+			/* Act on the event */
+		}).on('end', function(event) {
+			fn1.call(obj1,Iconv.decode(htmlData,'gb2312').toString());
+		 	// that.getNextRequest();
+			/* Act on the event */
+		});;
+	})
+	req.on('error', function(e) { 
+		console.log('problem with request: ' + e.message); 
+	}); 
+	//结束请求
+	req.end();
 }
 
 function anaUrl ( url){

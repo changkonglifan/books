@@ -5,6 +5,8 @@ var analysis = require("./analysis.js");
 
 var Iconv = require('iconv-lite');
 
+var BufferHelper = require('bufferhelper');
+
 var fs = require("fs");
 function requestClass(){
 	this.http = http;
@@ -198,21 +200,22 @@ requestClass.prototype.requestChapter = function(url,bookId){
  */
 requestClass.prototype.getRequestData =function(url,fn,obj,fn1,obj1){
 	var that = this;
-	var obj = anaUrl(url);
+	var objPath = anaUrl(url);
 	var option = {
-		hostname : obj.hostname,
+		hostname : objPath.hostname,
 		prot : 80,
-		path : obj.path,
+		path : objPath.path,
 		method: "GET"
 	}
-	var htmlData = "";
+	var bufferHelper = new BufferHelper();
+
 	var req = this.http.request(option,function(res){
-		
 		res.on('data', function(data) {
-			htmlData += data;
+			 bufferHelper.concat(data);
 			/* Act on the event */
 		}).on('end', function(event) {
-			fn1.call(obj1,Iconv.decode(htmlData,'gb2312').toString());
+			// console.log(Iconv.decode(bufferHelper.toBuffer(),'GBK'));
+			fn.call(obj,Iconv.decode(bufferHelper.toBuffer(),'GBK'));
 		 	// that.getNextRequest();
 			/* Act on the event */
 		});;

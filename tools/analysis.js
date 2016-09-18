@@ -121,15 +121,19 @@ Analysis.prototype.anaChapterUrl = function(data,bookId,fn,obj){
 	})
 	this.anaChapterUrlList(chapterUrl,bookId,fn,obj);
 }
-
+/**
+ * 解析章节地址
+ * @param  {[type]}
+ * @param  {[type]}
+ * @param  {Function}
+ * @param  {[type]}
+ * @return {[type]}
+ */
 Analysis.prototype.anaChapterUrlList = function(chapterUrl,bookId,fn,obj){
 	var len = chapterUrl.length;
 	for(var i = 0; i < len; i ++){
 		fn.call(obj,chapterUrl[i],bookId);
 	}
-	// chapterUrl.each(function(index, el) {
-	// 	fn.call(obj,el,bookId);
-	// });
 }
 
 /**
@@ -139,12 +143,17 @@ Analysis.prototype.anaChapterUrlList = function(chapterUrl,bookId,fn,obj){
  * @return {[type]}        [description]
  */
 Analysis.prototype.anaChapterData = function(data,bookId,fn,obj){
-	var chapterName = data.match(tools.Regular.chapterName);
-	var chapterDataUrl = data.match(tools.Regular.chapterDataUrl)[0].match(tools.Regular.urls)[0];
-	var chapterNums = parseInt(data.match(tools.Regular.chapterNums)[0].split("：")[1]);
-	var updateTime = data.match(tools.Regular.chapterUpTime)[0].split("更新时间 : ")[1];
+	var chapterName = data.match(tools.Regular.chapterName);//章节名称
+	var chapterDataUrl = data.match(tools.Regular.chapterDataUrl)[0].match(tools.Regular.urls)[0];//章节地址
+	var chapterNums = parseInt(data.match(tools.Regular.chapterNums)[0].split("：")[1]);//章节字数
+	var updateTime = data.match(tools.Regular.chapterUpTime)[0].split("更新时间 : ")[1];//章节更新时间
 	fn.call(obj,chapterDataUrl,this.anaDataTxt,this);
 }
+/**
+ * 章节内容
+ * @param  {[type]}
+ * @return {[type]}
+ */
 Analysis.prototype.anaDataTxt = function(htmlData){
 	var data = htmlData;
 	console.log(data);
@@ -155,15 +164,6 @@ Analysis.prototype.anaDataTxt = function(htmlData){
  */
 Analysis.prototype.insertBookDetail = function(bookId,saveUrl){
 	
-}
-
-/**
- * 获取标题
- * @param  {[type]} data [description]
- * @return {[type]}      [description]
- */
-Analysis.prototype.getTitle = function(data){
-
 }
 
 exports.Analysis = new Analysis();
